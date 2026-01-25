@@ -2,6 +2,7 @@ import { Component, effect, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AddCategoryRequest } from '../models/category.model';
 import { CategoryService } from '../services/category-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-category',
@@ -11,12 +12,16 @@ import { CategoryService } from '../services/category-service';
 })
 export class AddCategory {
 
+  private router = inject(Router);
+
   constructor() {
     //use effect signal to watch the status of the api request. effects can not be used outside of constructor
     effect(() => {
       if(this.categoryService.addCategoryStatus() === 'success'){
-        console.log('Success');
+        //console.log('Success');
         //Redirect back to category list page
+        this.categoryService.addCategoryStatus.set('idle');
+        this.router.navigate(['/admin/categories']);
       }
       if(this.categoryService.addCategoryStatus() === 'error'){
         console.error('Add Category Request Failed');

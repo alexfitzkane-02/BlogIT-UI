@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from "@angular/router";
+import { CategoryService } from '../services/category-service';
 
 @Component({
   selector: 'app-category-list',
@@ -8,5 +9,13 @@ import { RouterLink } from "@angular/router";
   styleUrl: './category-list.css',
 })
 export class CategoryList {
+
+  private categorySerivce = inject(CategoryService);
+  private getAllCategories = this.categorySerivce.getallCategoires();
+
+  isLoading = this.getAllCategories.isLoading;
+  isError = this.getAllCategories.error;
+  value = this.getAllCategories.value;
+
 
 }

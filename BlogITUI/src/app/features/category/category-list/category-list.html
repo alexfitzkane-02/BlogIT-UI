@@ -4,4 +4,35 @@
     <div class="d-flex justify-content-end mt-3">
         <a class="btn btn-primary" [routerLink]="['/admin','categories','add']">Add Category</a>
     </div>
+
+    <div>
+        @if(isLoading()){
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        } @else {
+        @if(isError()){
+        <p class="text-danger">There has been an error...</p>
+        } @else {
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Url Handle</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (category of value(); track category.id) {
+                <tr>
+                    <td>{{category.id}}</td>
+                    <td>{{category.name}}</td>
+                    <td>{{category.urlHandle}}</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+                }
+        }
+    </div>
 </div>
