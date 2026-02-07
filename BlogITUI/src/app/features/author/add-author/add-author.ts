@@ -15,20 +15,6 @@ export class AddAuthor {
   authorService = inject(AuthorService);
   router = inject(Router);
 
- 
-  //use effect signal to watch the status of the api request. effects can not be used outside of constructor
-  constructor() {
-    effect(() => {
-      if(this.authorService.addAuthorStatus() === 'success'){
-        //console.log('Success');
-        this.authorService.addAuthorStatus.set('idle');
-        this.router.navigate(['/admin/authors']);
-      }
-      if(this.authorService.addAuthorStatus() === 'error'){
-        console.error('Add Author Request Failed');
-      }
-    })
-  }
 
   //1. import reactiveformmoduels
   //2. formgroup and then these have form controls
@@ -56,6 +42,18 @@ export class AddAuthor {
       urlHandle: addAuthorFormValue.urlHandle
     };
 
-    this.authorService.addAuthor(addAuthorDto);
+    this.authorService.addAuthorStatus.set('loading')
+    this.authorService.addAuthor(addAuthorDto).subscribe({
+      next: (addAuthorDto) => {
+        this.authorService.addAuthorStatus.set('success');
+        this.router.navigate(['/admin/authors']);
+        this.authorService.addAuthorStatus.set('idle');
+      },
+      error: () => {
+        this.authorService.addAuthorStatus.set('error');
+        console.error('There was an error creating the author');
+      }
+    });
   }
 }
+

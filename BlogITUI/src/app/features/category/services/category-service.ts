@@ -2,6 +2,7 @@ import { HttpClient, httpResource } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { AddCategoryRequest, Category } from '../models/category.model';
 import { environment } from '../../../../environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,16 +13,8 @@ export class CategoryService {
 
   addCategoryStatus = signal<'idle' | 'loading' | 'error' | 'success'>('idle');
 
-  addCategory(category: AddCategoryRequest){
-    this.addCategoryStatus.set('loading');
-    this.http.post<void>(`${this.apiBaseUrl}/api/Category`, category).subscribe({
-      next: () => {
-        this.addCategoryStatus.set('success');
-      },
-      error: () => {
-        this.addCategoryStatus.set('error');
-      }
-    });
+  addCategory(category: AddCategoryRequest): Observable<AddCategoryRequest>{
+    return this.http.post<AddCategoryRequest>(`${this.apiBaseUrl}/api/Category`, category);
   }
 
   getallCategoires(){

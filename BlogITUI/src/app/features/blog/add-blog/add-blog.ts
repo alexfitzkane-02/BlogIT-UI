@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { BlogService } from '../services/blog-service';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CreateBlogPostDto } from '../models/blog.models';
@@ -19,18 +19,6 @@ export class AddBlog {
   private categoryService = inject(CategoryService);
   private authorService = inject(AuthorService);
   private router = inject(Router);
-
-  constructor() {
-    effect(() => {
-      if (this.blogService.addBlogStatus() === 'success') {
-        this.blogService.addBlogStatus.set('idle');
-        this.router.navigate(['/admin/blogs']);
-      }
-      if (this.blogService.addBlogStatus() === 'error') {
-        console.error('Add Author Request Failed');
-      }
-    })
-  }
 
   private categoriesResourceRef = this.categoryService.getallCategoires();
   categoriesResponse = this.categoriesResourceRef.value;
@@ -87,9 +75,18 @@ export class AddBlog {
       categories: formRawValue.categories,
       isVisible: formRawValue.isVisible
     }
-    this.blogService.addBlogPost(createBlogPost);
+    this.blogService.addBlogStatus.set('loading')
+    this.blogService.addBlogPost(createBlogPost).subscribe({
+      next: (createBlogPost) => {
+        this.blogService.addBlogStatus.set('success');
+        this.router.navigate(['/admin/blogs']);
+        this.blogService.addBlogStatus.set('idle');
+      },
+      error: () => {
+        this.blogService.addBlogStatus.set('error');
+        console.error('Error adding blog post');
+      }
+    });
   }
-
 }
-
 

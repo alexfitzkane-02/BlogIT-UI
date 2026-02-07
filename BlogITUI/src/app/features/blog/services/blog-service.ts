@@ -1,7 +1,8 @@
-import { HttpClient, httpResource, HttpResourceRef, HttpResponse } from '@angular/common/http';
+import { HttpClient, httpResource, HttpResourceRef} from '@angular/common/http';
 import { inject, Injectable, InputSignal, signal } from '@angular/core';
 import { BlogPostDto, CreateBlogPostDto, EditBlogPostDto } from '../models/blog.models';
 import { environment } from '../../../../environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -18,36 +19,16 @@ export class BlogService {
     return httpResource<BlogPostDto[]>(() => `${this.apiBaseUrl}/api/Blog`)
   }
 
-  addBlogPost(blogPost: CreateBlogPostDto){
-    this.addBlogStatus.set('loading')
-    this.http.post<void>(`${this.apiBaseUrl}/api/Blog`, blogPost).subscribe({
-      next: () => {
-        this.addBlogStatus.set('success');
-        console.log('Success');
-      },
-      error: () => {
-        this.addBlogStatus.set('error');
-        console.error('Error adding blog post.');
-      }
-    });
+  addBlogPost(blogPost: CreateBlogPostDto) : Observable<CreateBlogPostDto>{
+    return this.http.post<CreateBlogPostDto>(`${this.apiBaseUrl}/api/Blog`, blogPost);
   }
 
   getBlogPostById(id: InputSignal<string | undefined>): HttpResourceRef<BlogPostDto | undefined>{
     return httpResource<BlogPostDto>(() => `${this.apiBaseUrl}/api/Blog/${id()}`);
   }
 
-  updateBlogPostById(id: string ,editBlogPost: EditBlogPostDto){
-    this.editBlogStatus.set('loading');
-    this.http.put<void>(`${this.apiBaseUrl}/api/Blog/${id}`, editBlogPost).subscribe({
-      next: () => {
-        this.editBlogStatus.set('success');
-        console.log('Success');
-      },
-      error: () => {
-        this.editBlogStatus.set('error');
-        console.error('Error adding blog post.');
-      }
-    });
+  updateBlogPostById(id: string, editBlogPost: EditBlogPostDto) : Observable<EditBlogPostDto>{
+    return this.http.put<EditBlogPostDto>(`${this.apiBaseUrl}/api/Blog/${id}`, editBlogPost);
   }
 
 }

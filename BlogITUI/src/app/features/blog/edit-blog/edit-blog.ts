@@ -21,18 +21,6 @@ export class EditBlog {
   private categoryService = inject(CategoryService);
   private router = inject(Router);
 
-    constructor() {
-    effect(() => {
-      if (this.blogService.editBlogStatus() === 'success') {
-        this.blogService.editBlogStatus.set('idle');
-        this.router.navigate(['/admin/blogs']);
-      }
-      if (this.blogService.editBlogStatus() === 'error') {
-        console.error('Add Author Request Failed');
-      }
-    })
-  }
-
   private blogRef = this.blogService.getBlogPostById(this.id);
   isLoadingBlog = this.blogRef.isLoading;
   errorBlog = this.blogRef.error;
@@ -117,9 +105,18 @@ export class EditBlog {
         isVisible: formRawValue.isVisible,
         lasteditTimeStamp: new Date()
       }
-      this.blogService.updateBlogPostById(id, blogPost);
-
+      this.blogService.editBlogStatus.set('loading');
+      this.blogService.updateBlogPostById(id, blogPost).subscribe({
+        next: (updateBlogPostById) => {
+          this.blogService.editBlogStatus.set('success');
+          this.router.navigate(['/admin/blogs']);
+          this.blogService.editBlogStatus.set('idle');
+        },
+        error: () => {
+          this.blogService.editBlogStatus.set('error');
+          console.error('Edit Blog Request Failed');
+        }
+      });
     }
   }
-
 }

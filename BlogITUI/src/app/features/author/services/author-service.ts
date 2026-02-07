@@ -3,6 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { AddAuthorRequest, Author } from '../models/author.model';
 import { environment } from '../../../../environments/environment';
 import { AddAuthor } from '../add-author/add-author';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -19,16 +20,9 @@ export class AuthorService {
     return httpResource<Author[]>(() => `${this.apiBaseUrl}/api/Author`);
   }
 
-  addAuthor(author: AddAuthorRequest){
-    this.addAuthorStatus.set('loading');
-    this.http.post<void>(`${this.apiBaseUrl}/api/Author`, author).subscribe({
-      next: () => {
-        this.addAuthorStatus.set('success');
-      },
-      error: () => {
-        this.addAuthorStatus.set('error');
-      }
-    });
+  addAuthor(author: AddAuthorRequest) : Observable<AddAuthorRequest>{
+    return this.http.post<AddAuthorRequest>(`${this.apiBaseUrl}/api/Author`, author);
   }
+
 }
 
