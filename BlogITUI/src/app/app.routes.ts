@@ -5,6 +5,7 @@ import { AuthorList } from './features/author/author-list/author-list';
 import { AddAuthor } from './features/author/add-author/add-author';
 import { BlogList } from './features/blog/blog-list/blog-list';
 import { AddBlog } from './features/blog/add-blog/add-blog';
+import { EditBlog } from './features/blog/edit-blog/edit-blog';
 
 export const routes: Routes = [
     {
@@ -30,6 +31,10 @@ export const routes: Routes = [
      {
         path: 'admin/blogs/add',
         component: AddBlog
+    },
+    {
+        path: 'admin/blogs/edit/:id',
+        component: EditBlog
     }
 
 ];

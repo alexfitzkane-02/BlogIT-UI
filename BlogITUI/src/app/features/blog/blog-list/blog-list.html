@@ -16,17 +16,16 @@
     <table class="table table-bordered mt-3">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Title</th>
                 <th>Author</th>
                 <th>Categories</th>
                 <th>Created Date</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             @for (blog of blogs(); track blog.id) {
             <tr>
-                <td>{{blog.id}}</td>
                 <td>{{blog.title}}</td>
                 <td>{{blog.author.name}}</td>
                 <td>
@@ -35,6 +34,9 @@
                     }
                 </td>
                 <td>{{blog.createdTimeStamp}}</td>
+                <td>
+                    <a class="btn btn-light" [routerLink]="['/admin/blogs/edit', blog.id]">Edit</a>
+                </td>
             </tr>
             }
         </tbody>

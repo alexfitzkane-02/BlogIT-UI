@@ -23,3 +23,14 @@ export interface CreateBlogPostDto {
     categories: string[],
     isVisible: boolean
 }
+
+export interface EditBlogPostDto {
+    title: string,
+    description: string,
+    author: string,
+    featuredImageUrl: string,
+    urlHandle: string,
+    categories: string[],
+    isVisible: boolean,
+    lasteditTimeStamp: Date
+}

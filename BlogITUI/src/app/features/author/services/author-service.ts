@@ -16,12 +16,12 @@ export class AuthorService {
   addAuthorStatus = signal<'idle' | 'error' | 'success' | 'loading'>('idle');
 
   getAllAuthors(){
-    return httpResource<Author[]>(() => `${this.apiBaseUrl}/api/Author/authors`);
+    return httpResource<Author[]>(() => `${this.apiBaseUrl}/api/Author`);
   }
 
   addAuthor(author: AddAuthorRequest){
     this.addAuthorStatus.set('loading');
-    this.http.post<void>(`${this.apiBaseUrl}/api/author/author`, author).subscribe({
+    this.http.post<void>(`${this.apiBaseUrl}/api/Author`, author).subscribe({
       next: () => {
         this.addAuthorStatus.set('success');
       },
