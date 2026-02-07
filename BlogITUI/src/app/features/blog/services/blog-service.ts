@@ -14,6 +14,7 @@ export class BlogService {
 
   addBlogStatus = signal<'idle' | 'error' | 'success' | 'loading' >('idle');
   editBlogStatus = signal<'idle' | 'error' | 'success' | 'loading' >('idle');
+  deleteBlogStatus = signal<'idle' | 'error' | 'success' | 'loading' >('idle');
 
   getBlogPosts(){
     return httpResource<BlogPostDto[]>(() => `${this.apiBaseUrl}/api/Blog`)
@@ -29,6 +30,10 @@ export class BlogService {
 
   updateBlogPostById(id: string, editBlogPost: EditBlogPostDto) : Observable<EditBlogPostDto>{
     return this.http.put<EditBlogPostDto>(`${this.apiBaseUrl}/api/Blog/${id}`, editBlogPost);
+  }
+
+  deleteBlogPostById(id: string) : Observable<BlogPostDto>{
+    return this.http.delete<BlogPostDto>(`${this.apiBaseUrl}/api/Blog/${id}`);
   }
 
 }

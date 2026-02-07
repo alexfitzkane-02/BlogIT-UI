@@ -119,4 +119,23 @@ export class EditBlog {
       });
     }
   }
+
+  onDelete(){
+    const id = this.id();
+
+    if(id){
+      this.blogService.deleteBlogStatus.set('loading');
+      this.blogService.deleteBlogPostById(id).subscribe({
+        next: () => {
+          this.blogService.deleteBlogStatus.set('success');
+          this.router.navigate(['/admin/blogs']);
+          this.blogService.deleteBlogStatus.set('idle');
+        },
+        error: () => {
+          this.blogService.deleteBlogStatus.set('error');
+          console.error('There was an error deleting the blog post');
+        }
+      });
+    }
+  }
 }
