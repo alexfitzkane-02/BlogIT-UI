@@ -1,4 +1,4 @@
-import { HttpClient, httpResource, HttpResourceRef} from '@angular/common/http';
+import { HttpClient, httpResource, HttpResourceRef, HttpResponse} from '@angular/common/http';
 import { inject, Injectable, InputSignal, signal } from '@angular/core';
 import { BlogPostDto, CreateBlogPostDto, EditBlogPostDto } from '../models/blog.models';
 import { environment } from '../../../../environments/environment';
@@ -26,6 +26,10 @@ export class BlogService {
 
   getBlogPostById(id: InputSignal<string | undefined>): HttpResourceRef<BlogPostDto | undefined>{
     return httpResource<BlogPostDto>(() => `${this.apiBaseUrl}/api/Blog/${id()}`);
+  }
+
+  getBlogPostByUrlHandle(urlHandle: InputSignal<string | undefined>) : HttpResourceRef<BlogPostDto | undefined>{
+    return httpResource<BlogPostDto>(() => `${this.apiBaseUrl}/api/Blog/${urlHandle()}`);
   }
 
   updateBlogPostById(id: string, editBlogPost: EditBlogPostDto) : Observable<EditBlogPostDto>{

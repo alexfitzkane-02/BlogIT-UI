@@ -6,8 +6,18 @@ import { AddAuthor } from './features/author/add-author/add-author';
 import { BlogList } from './features/blog/blog-list/blog-list';
 import { AddBlog } from './features/blog/add-blog/add-blog';
 import { EditBlog } from './features/blog/edit-blog/edit-blog';
+import { Home } from './features/public/home/home';
+import { BlogDetails } from './features/public/blog-details/blog-details';
 
 export const routes: Routes = [
+    {
+        path: '',
+        component: Home
+    },
+    {
+        path: 'blog/:urlHandle',
+        component: BlogDetails
+    },
     {
         path: 'admin/categories',
         component: CategoryList
