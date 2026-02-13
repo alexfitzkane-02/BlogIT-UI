@@ -8,3 +8,8 @@ export interface Author {
     name: string,
     urlHandle: string
 }
+
+export interface EditAuthorRequest {
+    name: string,
+    urlHandle: string
+}

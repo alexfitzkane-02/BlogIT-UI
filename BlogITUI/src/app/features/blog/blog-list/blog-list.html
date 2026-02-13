@@ -35,7 +35,8 @@
                 </td>
                 <td>{{blog.createdTimeStamp}}</td>
                 <td>
-                    <a class="btn btn-light" [routerLink]="['/admin/blogs/edit', blog.id]">Edit</a>
+                    <a class="btn btn-primary m-1" [routerLink]="['/blog',blog.urlHandle]">View</a>
+                    <a class="btn btn-light m-1" [routerLink]="['/admin/blogs/edit', blog.id]">Edit</a>
                 </td>
             </tr>
             }

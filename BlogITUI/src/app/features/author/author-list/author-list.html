@@ -14,17 +14,19 @@
     <table class="table table-bordered mt-3">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
                 <th>Url Handle</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             @for (author of authors(); track author.id) {
             <tr>
-                <td>{{author.id}}</td>
                 <td>{{author.name}}</td>
                 <td>{{author.urlHandle}}</td>
+                <td>
+                    <a type="button" class="btn btn-primary m-1" [routerLink]="['/admin/authors/edit', author.id]">Edit</a>
+                </td>
             </tr>
             }
         </tbody>

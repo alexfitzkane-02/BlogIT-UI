@@ -8,6 +8,8 @@ import { AddBlog } from './features/blog/add-blog/add-blog';
 import { EditBlog } from './features/blog/edit-blog/edit-blog';
 import { Home } from './features/public/home/home';
 import { BlogDetails } from './features/public/blog-details/blog-details';
+import { EditCategory } from './features/category/edit-category/edit-category';
+import { EditAuthor } from './features/author/edit-author/edit-author';
 
 export const routes: Routes = [
     {
@@ -23,6 +25,10 @@ export const routes: Routes = [
         component: CategoryList
     },
     {
+        path: 'admin/category/edit/:id',
+        component: EditCategory
+    },
+    {
         path: 'admin/categories/add',
         component: AddCategory
     },
@@ -33,6 +39,10 @@ export const routes: Routes = [
     {
         path: 'admin/authors/add',
         component: AddAuthor
+    },
+    {
+        path: 'admin/authors/edit/:id',
+        component: EditAuthor
     },
     {
         path: 'admin/blogs',
