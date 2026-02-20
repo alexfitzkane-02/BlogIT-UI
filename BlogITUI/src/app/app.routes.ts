@@ -10,6 +10,8 @@ import { Home } from './features/public/home/home';
 import { BlogDetails } from './features/public/blog-details/blog-details';
 import { EditCategory } from './features/category/edit-category/edit-category';
 import { EditAuthor } from './features/author/edit-author/edit-author';
+import { Login } from './features/auth/login/login';
+import { adminGuard } from './features/auth/guards/admin-guard';
 
 export const routes: Routes = [
     {
@@ -17,44 +19,57 @@ export const routes: Routes = [
         component: Home
     },
     {
+        path: 'login',
+        component: Login
+    },
+    {
         path: 'blog/:urlHandle',
         component: BlogDetails
     },
     {
         path: 'admin/categories',
-        component: CategoryList
+        component: CategoryList,
+        canActivate: [adminGuard]
     },
     {
         path: 'admin/category/edit/:id',
-        component: EditCategory
+        component: EditCategory,
+        canActivate: [adminGuard]
     },
     {
         path: 'admin/categories/add',
-        component: AddCategory
+        component: AddCategory,
+        canActivate: [adminGuard]
     },
     {
         path: 'admin/authors',
-        component: AuthorList
+        component: AuthorList,
+        canActivate: [adminGuard]
     },
     {
         path: 'admin/authors/add',
-        component: AddAuthor
+        component: AddAuthor,
+        canActivate: [adminGuard]
     },
     {
         path: 'admin/authors/edit/:id',
-        component: EditAuthor
+        component: EditAuthor,
+        canActivate: [adminGuard]
     },
     {
         path: 'admin/blogs',
-        component: BlogList
+        component: BlogList,
+        canActivate: [adminGuard]
     },
      {
         path: 'admin/blogs/add',
-        component: AddBlog
+        component: AddBlog,
+        canActivate: [adminGuard]
     },
     {
         path: 'admin/blogs/edit/:id',
-        component: EditBlog
+        component: EditBlog,
+        canActivate: [adminGuard]
     }
 
 ];

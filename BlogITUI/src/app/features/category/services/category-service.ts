@@ -16,7 +16,9 @@ export class CategoryService {
   deleteCategoryStatus = signal<'idle' | 'loading' | 'error' | 'success'>('idle');
 
   addCategory(category: AddCategoryRequest): Observable<AddCategoryRequest>{
-    return this.http.post<AddCategoryRequest>(`${this.apiBaseUrl}/api/Category`, category);
+    return this.http.post<AddCategoryRequest>(`${this.apiBaseUrl}/api/Category`, category,{
+      withCredentials: true
+    });
   }
 
   getallCategoires(){
@@ -28,10 +30,14 @@ export class CategoryService {
   }
 
   editCategoryById(id: InputSignal<string | undefined>, category: EditCategoryRequest) : Observable<EditCategoryRequest | undefined>{
-    return this.http.put<EditCategoryRequest>(`${this.apiBaseUrl}/api/Category/${id()}`, category);
+    return this.http.put<EditCategoryRequest>(`${this.apiBaseUrl}/api/Category/${id()}`, category, {
+      withCredentials: true
+    });
   }
 
   deleteCategoryById(id: InputSignal<string | undefined>) : Observable<Category | undefined>{
-    return this.http.delete<Category>(`${this.apiBaseUrl}/api/Category/${id()}`);
+    return this.http.delete<Category>(`${this.apiBaseUrl}/api/Category/${id()}`, {
+      withCredentials: true
+    });
   }
 }

@@ -21,7 +21,9 @@ export class BlogService {
   }
 
   addBlogPost(blogPost: CreateBlogPostDto) : Observable<CreateBlogPostDto>{
-    return this.http.post<CreateBlogPostDto>(`${this.apiBaseUrl}/api/Blog`, blogPost);
+    return this.http.post<CreateBlogPostDto>(`${this.apiBaseUrl}/api/Blog`, blogPost, {
+      withCredentials: true
+    });
   }
 
   getBlogPostById(id: InputSignal<string | undefined>): HttpResourceRef<BlogPostDto | undefined>{
@@ -33,11 +35,15 @@ export class BlogService {
   }
 
   updateBlogPostById(id: string, editBlogPost: EditBlogPostDto) : Observable<EditBlogPostDto>{
-    return this.http.put<EditBlogPostDto>(`${this.apiBaseUrl}/api/Blog/${id}`, editBlogPost);
+    return this.http.put<EditBlogPostDto>(`${this.apiBaseUrl}/api/Blog/${id}`, editBlogPost, {
+      withCredentials: true
+    });
   }
 
   deleteBlogPostById(id: string) : Observable<BlogPostDto>{
-    return this.http.delete<BlogPostDto>(`${this.apiBaseUrl}/api/Blog/${id}`);
+    return this.http.delete<BlogPostDto>(`${this.apiBaseUrl}/api/Blog/${id}`, {
+      withCredentials: true
+    });
   }
 
 }

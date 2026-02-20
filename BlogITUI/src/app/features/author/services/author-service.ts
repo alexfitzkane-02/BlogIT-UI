@@ -27,15 +27,21 @@ export class AuthorService {
   }
 
   addAuthor(author: AddAuthorRequest) : Observable<AddAuthorRequest>{
-    return this.http.post<AddAuthorRequest>(`${this.apiBaseUrl}/api/Author`, author);
+    return this.http.post<AddAuthorRequest>(`${this.apiBaseUrl}/api/Author`, author, {
+      withCredentials: true
+    });
   }
 
   editAuthorById(id: InputSignal<string | undefined>, author: EditAuthorRequest) : Observable<Author | undefined>{
-    return this.http.put<Author>(`${this.apiBaseUrl}/api/Author/${id()}`, author);
+    return this.http.put<Author>(`${this.apiBaseUrl}/api/Author/${id()}`, author, {
+      withCredentials: true
+    });
   }
 
   deleteAuthorById(id: InputSignal<string | undefined>): Observable<Author>{
-    return this.http.delete<Author>(`${this.apiBaseUrl}/api/Author/${id()}`);
+    return this.http.delete<Author>(`${this.apiBaseUrl}/api/Author/${id()}`, {
+      withCredentials: true
+    });
   }
 
 }
