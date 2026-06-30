@@ -6,10 +6,12 @@ import { MarkdownComponent } from 'ngx-markdown';
 import { CategoryService } from '../../category/services/category-service';
 import { AuthorService } from '../../author/services/author-service';
 import { Router } from '@angular/router';
+import { ImageSelectorService } from '../../../shared/services/image-selector-service';
+import { ImageSelector } from '../../../shared/image-selector/image-selector';
 
 @Component({
   selector: 'app-add-blog',
-  imports: [ReactiveFormsModule, MarkdownComponent],
+  imports: [ReactiveFormsModule, MarkdownComponent, ImageSelector],
   templateUrl: './add-blog.html',
   styleUrl: './add-blog.css',
 })
@@ -18,7 +20,9 @@ export class AddBlog {
   private blogService = inject(BlogService);
   private categoryService = inject(CategoryService);
   private authorService = inject(AuthorService);
+  imageSelectorSerivce = inject(ImageSelectorService);
   private router = inject(Router);
+
 
   private categoriesResourceRef = this.categoryService.getallCategoires();
   categoriesResponse = this.categoriesResourceRef.value;

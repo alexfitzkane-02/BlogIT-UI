@@ -34,3 +34,12 @@ export interface EditBlogPostDto {
     isVisible: boolean,
     lasteditTimeStamp: Date
 }
+
+export interface BlogImage{
+    id: string,
+    fileName: string,
+    title: string,
+    fileExtenstion: string,
+    url: string,
+    dateCreated: string
+}

@@ -35,14 +35,18 @@
             </select>
         </div>
         <div class="mb-3">
-            <label class="form-label">Featured Image Url</label>
+            <label class="form-label">Featured Image URL
+                <button class="btn btn-light" type="button" (click)="imageSelectorSerivce.dispalyImageSelector()">
+                    Select Images
+                </button>
+            </label>
+            @if(blogFormGroup.controls.featuredImageUrl.getRawValue()){
+            <div>
+                <img style="width: 100px" class="my-2"
+                    [src]="blogFormGroup.controls.featuredImageUrl.getRawValue()" />
+            </div>
+            }
             <input type="text" class="form-control" formControlName="featuredImageUrl">
-            @if(featuredImageUrlFormControl.touched && featuredImageUrlFormControl.hasError('required')){
-            <p class="text-danger">This field is required</p>
-            }
-            @if(featuredImageUrlFormControl.touched && featuredImageUrlFormControl.hasError('maxlength')){
-            <p class="text-danger">Title must be less than 500 characters</p>
-            }
         </div>
         <div class="mb-3">
             <label class="form-label">Url Handle</label>
@@ -72,4 +76,6 @@
         </div>
         <button type="submit" class="btn btn-primary" [disabled]="blogFormGroup.valid === false">Submit</button>
     </form>
+
+    <app-image-selector></app-image-selector>
 </div>
