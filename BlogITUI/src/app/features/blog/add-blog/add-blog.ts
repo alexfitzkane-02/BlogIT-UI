@@ -23,7 +23,6 @@ export class AddBlog {
   imageSelectorSerivce = inject(ImageSelectorService);
   private router = inject(Router);
 
-
   private categoriesResourceRef = this.categoryService.getallCategoires();
   categoriesResponse = this.categoriesResourceRef.value;
 
