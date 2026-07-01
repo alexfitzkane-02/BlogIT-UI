@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { BlogService } from '../services/blog-service';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CreateBlogPostDto } from '../models/blog.models';
@@ -22,6 +22,15 @@ export class AddBlog {
   private authorService = inject(AuthorService);
   imageSelectorSerivce = inject(ImageSelectorService);
   private router = inject(Router);
+
+   constructor() {
+    effect(() => {
+      const selected = this.imageSelectorSerivce.selectedImage();
+      if (selected) {
+        this.blogFormGroup.controls.featuredImageUrl.setValue(selected);
+      }
+    });
+  }
 
   private categoriesResourceRef = this.categoryService.getallCategoires();
   categoriesResponse = this.categoriesResourceRef.value;

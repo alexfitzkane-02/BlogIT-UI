@@ -6,10 +6,12 @@ import { AuthorService } from '../../author/services/author-service';
 import { CategoryService } from '../../category/services/category-service';
 import { EditBlogPostDto } from '../models/blog.models';
 import { Router } from '@angular/router';
+import { ImageSelectorService } from '../../../shared/services/image-selector-service';
+import { ImageSelector } from '../../../shared/image-selector/image-selector';
 
 @Component({
   selector: 'app-edit-blog',
-  imports: [ReactiveFormsModule, MarkdownComponent],
+  imports: [ReactiveFormsModule, MarkdownComponent, ImageSelector],
   templateUrl: './edit-blog.html',
   styleUrl: './edit-blog.css',
 })
@@ -19,6 +21,7 @@ export class EditBlog {
   private blogService = inject(BlogService);
   private authorService = inject(AuthorService);
   private categoryService = inject(CategoryService);
+  imageSelectorService = inject(ImageSelectorService);
   private router = inject(Router);
 
   private blogRef = this.blogService.getBlogPostById(this.id);
@@ -87,6 +90,14 @@ export class EditBlog {
     })
   });
 
+  selectedImageEffectRef = effect(() => {
+    const selectedImageUrl = this.imageSelectorService.selectedImage();
+    if (selectedImageUrl) {
+      this.editFormGroup.patchValue({
+        featuredImageUrl: selectedImageUrl,
+      });
+    }
+  });
 
 
   onSubmit() {
@@ -120,10 +131,10 @@ export class EditBlog {
     }
   }
 
-  onDelete(){
+  onDelete() {
     const id = this.id();
 
-    if(id){
+    if (id) {
       this.blogService.deleteBlogStatus.set('loading');
       this.blogService.deleteBlogPostById(id).subscribe({
         next: () => {
@@ -137,5 +148,8 @@ export class EditBlog {
         }
       });
     }
+  }
+  openImageSelector() {
+    this.imageSelectorService.dispalyImageSelector();
   }
 }
