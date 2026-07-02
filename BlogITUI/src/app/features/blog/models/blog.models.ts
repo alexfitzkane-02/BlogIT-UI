@@ -43,3 +43,11 @@ export interface BlogImage{
     url: string,
     dateCreated: string
 }
+
+export interface PagedBlogResponse {
+  page: number;
+  pageSize: number;
+  totalCount: number;
+  totalPages: number;
+  data: BlogPostDto[];
+}

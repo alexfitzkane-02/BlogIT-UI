@@ -30,7 +30,6 @@ export class Login {
   onSubmit(){
 
     const formRawValue = this.loginFormGroup.getRawValue();
-    console.log(formRawValue);
 
     if(this.loginFormGroup.valid){
       this.authService.loginStatus.set('loading');
