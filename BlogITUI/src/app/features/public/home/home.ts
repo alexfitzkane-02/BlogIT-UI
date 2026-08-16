@@ -13,11 +13,11 @@ export class Home {
   private blogService = inject(BlogService);
 
   pageNumber = signal(1);
-  pageSize = signal(3); // 6 looks nicer in a 3-column card grid
+  pageSize = signal(3);
 
   blogRef = this.blogService.getBlogPosts(this.pageNumber, this.pageSize);
   isLoading = this.blogRef.isLoading;
-  isError = this.blogRef.error;
+  isError = this.blogRef.isError;
 
   blogs = computed(() => this.blogRef.value()?.data ?? []);
   totalPages = computed(() => this.blogRef.value()?.totalPages ?? 0);

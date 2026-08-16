@@ -2,7 +2,8 @@ import { HttpClient, httpResource, HttpResourceRef, HttpResponse } from '@angula
 import { inject, Injectable, InputSignal, signal } from '@angular/core';
 import { BlogPostDto, CreateBlogPostDto, EditBlogPostDto, PagedBlogResponse } from '../models/blog.models';
 import { environment } from '../../../../environments/environment';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of, switchMap, tap } from 'rxjs';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root',
@@ -16,26 +17,53 @@ export class BlogService {
   editBlogStatus = signal<'idle' | 'error' | 'success' | 'loading'>('idle');
   deleteBlogStatus = signal<'idle' | 'error' | 'success' | 'loading'>('idle');
 
+  // tracks whether the last getBlogPosts call failed
+  blogPostsError = signal<boolean>(false);
+  blogPostsLoading = signal<boolean>(false);
+
   getBlogPosts(pageNumber = signal(1), pageSize = signal(10), search = signal(''), showAll = false) {
-    return httpResource<PagedBlogResponse>(() => {
-      const params = new URLSearchParams({
-        pageNumber: pageNumber().toString(),
-        pageSize: pageSize().toString(),
-      });
+    this.blogPostsError.set(false);
+    this.blogPostsLoading.set(true);
 
-      // only show visible posts on public pages
-      if (!showAll) {
-        params.set('isVisible', 'true');
-      }
+    const result = toSignal(
+      toObservable(pageNumber).pipe(
+        switchMap(page => {
+          const params = new URLSearchParams({
+            pageNumber: page.toString(),
+            pageSize: pageSize().toString(),
+          });
 
-      // only add search param if there's actually a value
-      if (search() !== '') {
-        params.set('search', search());
-      }
+          if (!showAll) {
+            params.set('isVisible', 'true');
+          }
 
-      return `${this.apiBaseUrl}/api/Blog?${params.toString()}`;
-    });
+          if (search() !== '') {
+            params.set('search', search());
+          }
+
+          return this.http.get<PagedBlogResponse>(
+            `${this.apiBaseUrl}/api/Blog?${params.toString()}`
+          ).pipe(
+            tap(() => this.blogPostsLoading.set(false)),
+            catchError(() => {
+              this.blogPostsError.set(true);
+              this.blogPostsLoading.set(false);
+              return of(null);
+            })
+          );
+        })
+      ),
+      { initialValue: null }
+    );
+
+    // return an object that matches the shape home.ts and blog-list.ts expect
+    return {
+      value: result,
+      isLoading: this.blogPostsLoading,
+      isError: this.blogPostsError,
+    };
   }
+
   addBlogPost(blogPost: CreateBlogPostDto): Observable<CreateBlogPostDto> {
     return this.http.post<CreateBlogPostDto>(`${this.apiBaseUrl}/api/Blog`, blogPost, {
       withCredentials: true

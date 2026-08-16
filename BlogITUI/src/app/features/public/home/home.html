@@ -8,7 +8,7 @@
     </div>
 
     <!-- Blogs -->
-    <div class="row" *ngIf="!isLoading() && blogs().length > 0">
+    <div class="row" *ngIf="!isLoading() && !isError() && blogs().length > 0">
         <div class="col-lg-4 col-md-6 mb-4" *ngFor="let blog of blogs()">
             <div class="card h-100 shadow-sm">
                 <img [src]="blog.featuredImageUrl" class="card-img-top" [alt]="blog.title"
@@ -63,9 +63,18 @@
     </div>
 
     <!-- No blogs -->
-    <div class="text-center mt-5" *ngIf="!isLoading() && blogs().length === 0">
-        <h3>No blog posts found.</h3>
-        <p class="text-muted">Check back later for new content.</p>
-    </div>
+    <div
+    class="alert alert-danger mt-5 text-center"
+    *ngIf="!isLoading() && isError()">
+    <h5>Unable to reach the server</h5>
+    <p class="mb-0">Please try again later.</p>
+</div>
+
+<div
+    class="text-center mt-5"
+    *ngIf="!isLoading() && !isError() && blogs().length === 0">
+    <h3>No blog posts found.</h3>
+    <p class="text-muted">Check back later for new content.</p>
+</div>
 
 </div>

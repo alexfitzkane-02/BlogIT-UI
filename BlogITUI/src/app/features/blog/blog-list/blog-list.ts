@@ -16,7 +16,7 @@ export class BlogList {
 
   private response = this.blogService.getBlogPosts(this.pageNumber, this.pageSize, signal(''), true);
   isLoading = this.response.isLoading;
-  isError = this.response.error;
+  isError = this.response.isError;
 
   blogs = computed(() => this.response.value()?.data ?? []);
   totalPages = computed(() => this.response.value()?.totalPages ?? 0);
