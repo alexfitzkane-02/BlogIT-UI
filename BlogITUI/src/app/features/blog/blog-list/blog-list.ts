@@ -14,7 +14,7 @@ export class BlogList {
   pageNumber = signal(1);
   pageSize = signal(10);
 
-  private response = this.blogService.getBlogPosts(this.pageNumber, this.pageSize);
+  private response = this.blogService.getBlogPosts(this.pageNumber, this.pageSize, signal(''), true);
   isLoading = this.response.isLoading;
   isError = this.response.error;
 

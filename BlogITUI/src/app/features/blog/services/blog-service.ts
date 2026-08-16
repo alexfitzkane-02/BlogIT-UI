@@ -16,10 +16,25 @@ export class BlogService {
   editBlogStatus = signal<'idle' | 'error' | 'success' | 'loading'>('idle');
   deleteBlogStatus = signal<'idle' | 'error' | 'success' | 'loading'>('idle');
 
-  getBlogPosts(pageNumber = signal(1), pageSize = signal(10)) {
-    return httpResource<PagedBlogResponse>(() =>
-      `${this.apiBaseUrl}/api/Blog?pageNumber=${pageNumber()}&pageSize=${pageSize()}`
-    )
+  getBlogPosts(pageNumber = signal(1), pageSize = signal(10), search = signal(''), showAll = false) {
+    return httpResource<PagedBlogResponse>(() => {
+      const params = new URLSearchParams({
+        pageNumber: pageNumber().toString(),
+        pageSize: pageSize().toString(),
+      });
+
+      // only show visible posts on public pages
+      if (!showAll) {
+        params.set('isVisible', 'true');
+      }
+
+      // only add search param if there's actually a value
+      if (search() !== '') {
+        params.set('search', search());
+      }
+
+      return `${this.apiBaseUrl}/api/Blog?${params.toString()}`;
+    });
   }
   addBlogPost(blogPost: CreateBlogPostDto): Observable<CreateBlogPostDto> {
     return this.http.post<CreateBlogPostDto>(`${this.apiBaseUrl}/api/Blog`, blogPost, {
