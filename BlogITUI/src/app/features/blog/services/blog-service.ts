@@ -1,5 +1,5 @@
 import { HttpClient, httpResource, HttpResourceRef, HttpResponse } from '@angular/common/http';
-import { inject, Injectable, InputSignal, signal } from '@angular/core';
+import { inject, Injectable, InputSignal, signal, computed } from '@angular/core';
 import { BlogPostDto, CreateBlogPostDto, EditBlogPostDto, PagedBlogResponse } from '../models/blog.models';
 import { environment } from '../../../../environments/environment';
 import { catchError, Observable, of, switchMap, tap } from 'rxjs';
@@ -25,12 +25,17 @@ export class BlogService {
     this.blogPostsError.set(false);
     this.blogPostsLoading.set(true);
 
+    const combined = computed(() => ({
+      page: pageNumber(),
+      size: pageSize()
+    }));
+
     const result = toSignal(
-      toObservable(pageNumber).pipe(
-        switchMap(page => {
+      toObservable(combined).pipe(
+        switchMap(({ page, size }) => {
           const params = new URLSearchParams({
             pageNumber: page.toString(),
-            pageSize: pageSize().toString(),
+            pageSize: size.toString(),
           });
 
           if (!showAll) {
